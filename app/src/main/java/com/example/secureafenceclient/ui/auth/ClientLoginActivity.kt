@@ -24,7 +24,6 @@ class ClientLoginActivity : AppCompatActivity() {
         binding = ActivityClientLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Check active session
         val existingToken = ClientSessionManager.getToken(this)
         val existingCustomer = ClientSessionManager.getCustomerProfile(this)
         if (!existingToken.isNullOrEmpty() && existingCustomer != null) {
@@ -119,15 +118,9 @@ class ClientLoginActivity : AppCompatActivity() {
 
             try {
                 val api = ClientApiClient.instance
-                // Register via client route AND create in admin customers table for instant sync across Admin app
-                try {
-                    api.createCustomerAdmin(newCustomer)
-                } catch (e: Exception) {
-                    // Suppress if already exists
-                }
-
                 val response = api.registerCustomer(newCustomer)
-                val finalProfile = response.body() ?: newCustomer
+                val createdList = response.body()
+                val finalProfile = if (!createdList.isNullOrEmpty()) createdList.first() else newCustomer
 
                 ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${finalProfile.id}", finalProfile)
                 Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${finalProfile.name}!", Toast.LENGTH_LONG).show()
@@ -150,26 +143,11 @@ class ClientLoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val api = ClientApiClient.instance
-                val response = api.loginCustomer(mapOf("email" to email, "password" to password))
-                
-                if (response.isSuccessful && response.body() != null) {
-                    val body = response.body()!!
-                    val token = body["token"] as? String ?: "demo-token"
-                    val customerData = body["customer"] as? Map<*, *>
-                    
-                    val customerProfile = CustomerProfile(
-                        id = customerData?.get("id") as? String ?: "cust-101",
-                        name = customerData?.get("name") as? String ?: email.substringBefore("@").replaceFirstChar { it.uppercase() },
-                        email = email,
-                        company = customerData?.get("company") as? String ?: "Client Construction Co.",
-                        phone = customerData?.get("phone") as? String ?: "(555) 019-2831",
-                        role = "customer",
-                        isTaxable = true,
-                        businessAddress = customerData?.get("business_address") as? String ?: "100 Industrial Parkway, Suite A"
-                    )
-
-                    ClientSessionManager.saveSession(this@ClientLoginActivity, token, customerProfile)
-                    Toast.makeText(this@ClientLoginActivity, "Welcome back, ${customerProfile.name}!", Toast.LENGTH_SHORT).show()
+                val response = api.getCustomerProfile("eq.$email")
+                if (response.isSuccessful && !response.body().isNullOrEmpty()) {
+                    val profile = response.body()!!.first()
+                    ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${profile.id}", profile)
+                    Toast.makeText(this@ClientLoginActivity, "Welcome back, ${profile.name}!", Toast.LENGTH_SHORT).show()
                     navigateToMain()
                 } else {
                     val fallbackProfile = CustomerProfile(

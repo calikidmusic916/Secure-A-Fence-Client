@@ -6,59 +6,60 @@ import retrofit2.http.*
 
 interface ClientApiService {
 
-    // --- Backend REST Routes ---
-    @POST("api/client/login")
-    suspend fun loginCustomer(@Body credentials: Map<String, String>): Response<Map<String, Any>>
+    // --- Direct Supabase PostgREST Table Endpoints ---
 
-    @POST("api/client/register")
-    suspend fun registerCustomer(@Body customer: CustomerProfile): Response<CustomerProfile>
+    @POST("rest/v1/customers")
+    suspend fun registerCustomer(@Body customer: CustomerProfile): Response<List<CustomerProfile>>
 
-    @POST("api/admin/customers")
-    suspend fun createCustomerAdmin(@Body customer: CustomerProfile): Response<Map<String, Any>>
+    @POST("rest/v1/customers")
+    suspend fun createCustomerAdmin(@Body customer: CustomerProfile): Response<List<CustomerProfile>>
 
-    @GET("api/client/profile")
-    suspend fun getCustomerProfile(@Query("email") email: String): Response<CustomerProfile>
+    @GET("rest/v1/customers")
+    suspend fun getCustomerProfile(@Query("email") emailFilter: String): Response<List<CustomerProfile>>
 
-    @PUT("api/client/profile/{id}")
-    suspend fun updateCustomerProfile(@Path("id") id: String, @Body profile: CustomerProfile): Response<CustomerProfile>
+    @PATCH("rest/v1/customers")
+    suspend fun updateCustomerProfile(@Query("id") idFilter: String, @Body profile: CustomerProfile): Response<List<CustomerProfile>>
 
-    @GET("api/jobsites")
-    suspend fun getJobsites(@Query("customer_id") customerId: String? = null, @Query("customer_email") customerEmail: String? = null): Response<List<Jobsite>>
+    @GET("rest/v1/jobsites")
+    suspend fun getJobsites(
+        @Query("customer_id") customerId: String? = null,
+        @Query("customer_email") customerEmail: String? = null
+    ): Response<List<Jobsite>>
 
-    @POST("api/jobsites")
-    suspend fun createJobsite(@Body jobsite: Jobsite): Response<Jobsite>
+    @POST("rest/v1/jobsites")
+    suspend fun createJobsite(@Body jobsite: Jobsite): Response<List<Jobsite>>
 
-    @POST("api/admin/customers/{customerId}/jobsites")
+    @POST("rest/v1/jobsites")
     suspend fun createJobsiteAdmin(
-        @Path("customerId") customerId: String,
+        @Query("customer_id") customerId: String,
         @Body jobsite: Jobsite
-    ): Response<Map<String, Any>>
+    ): Response<List<Jobsite>>
 
-    @GET("api/products")
+    @GET("rest/v1/products")
     suspend fun getProducts(): Response<List<ClientProduct>>
 
-    @GET("api/orders")
+    @GET("rest/v1/orders")
     suspend fun getOrders(@Query("customer_email") customerEmail: String? = null): Response<List<ClientOrder>>
 
-    @POST("api/orders")
-    suspend fun createOrder(@Body order: ClientOrder): Response<ClientOrder>
+    @POST("rest/v1/orders")
+    suspend fun createOrder(@Body order: ClientOrder): Response<List<ClientOrder>>
 
-    @GET("api/rentals")
+    @GET("rest/v1/rentals")
     suspend fun getRentals(@Query("customer_email") customerEmail: String? = null): Response<List<ClientRental>>
 
-    @PUT("api/rentals/{id}/extend")
-    suspend fun extendRental(@Path("id") rentalId: String, @Body body: Map<String, String>): Response<ClientRental>
+    @PATCH("rest/v1/rentals")
+    suspend fun extendRental(@Query("id") rentalIdFilter: String, @Body body: Map<String, String>): Response<List<ClientRental>>
 
-    @GET("api/shipments")
+    @GET("rest/v1/shipments")
     suspend fun getShipments(@Query("customer_email") customerEmail: String? = null): Response<List<ClientShipment>>
 
-    @GET("api/invoices")
+    @GET("rest/v1/invoices")
     suspend fun getInvoices(@Query("customer_email") customerEmail: String? = null): Response<List<ClientInvoice>>
 
-    @POST("api/invoices/{id}/pay")
-    suspend fun payInvoice(@Path("id") invoiceId: String, @Body body: Map<String, String>): Response<Map<String, Any>>
+    @PATCH("rest/v1/invoices")
+    suspend fun payInvoice(@Query("id") invoiceIdFilter: String, @Body body: Map<String, String>): Response<List<Map<String, Any>>>
 
-    // --- Stripe API Payment Sheet & Payment Methods ---
+    // --- Stripe API Endpoints (via backend or direct) ---
     @POST("api/stripe/create-payment-sheet")
     suspend fun createPaymentSheet(@Body request: Map<String, Any>): Response<Map<String, String>>
 
@@ -70,75 +71,4 @@ interface ClientApiService {
 
     @POST("api/stripe/create-setup-intent")
     suspend fun createSetupIntent(@Body request: Map<String, Any>): Response<Map<String, String>>
-
-    // --- Direct Supabase Table Access Routes (PostgREST) ---
-    @POST("rest/v1/customers")
-    suspend fun supabaseCreateCustomer(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Header("Prefer") preferHeader: String = "return=representation",
-        @Body customer: CustomerProfile
-    ): Response<List<CustomerProfile>>
-
-    @GET("rest/v1/customers")
-    suspend fun supabaseGetCustomer(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Query("email") emailFilter: String
-    ): Response<List<CustomerProfile>>
-
-    @POST("rest/v1/jobsites")
-    suspend fun supabaseCreateJobsite(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Header("Prefer") preferHeader: String = "return=representation",
-        @Body jobsite: Jobsite
-    ): Response<List<Jobsite>>
-
-    @GET("rest/v1/jobsites")
-    suspend fun supabaseGetJobsites(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Query("customer_id") customerIdFilter: String? = null
-    ): Response<List<Jobsite>>
-
-    @GET("rest/v1/products")
-    suspend fun supabaseGetProducts(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String
-    ): Response<List<ClientProduct>>
-
-    @POST("rest/v1/orders")
-    suspend fun supabaseCreateOrder(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Header("Prefer") preferHeader: String = "return=representation",
-        @Body order: ClientOrder
-    ): Response<List<ClientOrder>>
-
-    @GET("rest/v1/orders")
-    suspend fun supabaseGetOrders(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Query("customer_email") emailFilter: String? = null
-    ): Response<List<ClientOrder>>
-
-    @GET("rest/v1/rentals")
-    suspend fun supabaseGetRentals(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String,
-        @Query("customer_email") emailFilter: String? = null
-    ): Response<List<ClientRental>>
-
-    @GET("rest/v1/shipments")
-    suspend fun supabaseGetShipments(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String
-    ): Response<List<ClientShipment>>
-
-    @GET("rest/v1/invoices")
-    suspend fun supabaseGetInvoices(
-        @Header("apikey") apiKey: String,
-        @Header("Authorization") authHeader: String
-    ): Response<List<ClientInvoice>>
 }

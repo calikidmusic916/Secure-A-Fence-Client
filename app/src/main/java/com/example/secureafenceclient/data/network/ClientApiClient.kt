@@ -6,6 +6,7 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,13 +14,28 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ClientApiClient {
-    private const val BASE_URL = "https://secure-a-fence-backend.onrender.com/"
+    // Direct Supabase PostgREST API URL
+    private const val SUPABASE_URL = "https://vjpisvubptxupcrrfuam.supabase.co/"
+    private const val SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqcGlzdnVicHR4dXBjcnJmdWFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyMjQyMzUsImV4cCI6MjEwNDgwMDIzNX0.4SQm6XuS7FcwZ2wRGQ9WwAZRpLmVNqJcvsDQsaCi9Xs"
+
+    private val authInterceptor = Interceptor { chain ->
+        val original = chain.request()
+        val request = original.newBuilder()
+            .header("apikey", SUPABASE_ANON_KEY)
+            .header("Authorization", "Bearer $SUPABASE_ANON_KEY")
+            .header("Content-Type", "application/json")
+            .header("Prefer", "return=representation")
+            .method(original.method, original.body)
+            .build()
+        chain.proceed(request)
+    }
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
@@ -219,7 +235,7 @@ object ClientApiClient {
 
     val instance: ClientApiService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(SUPABASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
