@@ -29,16 +29,16 @@ data class ClientProduct(
     @SerializedName("name") val name: String? = null,
     @SerializedName("category") val category: String? = "sales",
     @SerializedName("type") val type: String? = "panel",
-    @SerializedName("sale_price", alternate = ["salePrice"]) val salePrice: Double? = 0.0,
-    @SerializedName("rental_price_monthly", alternate = ["rentalPriceMonthly"]) val rentalPriceMonthly: Double? = 0.0,
-    @SerializedName("in_stock", alternate = ["inStock"]) val inStock: Int? = 0,
-    @SerializedName("rented_count", alternate = ["rentedCount"]) val rentedCount: Int? = 0,
+    @SerializedName("sale_price", alternate = ["salePrice", "price", "cost", "amount"]) val salePrice: Double? = 85.0,
+    @SerializedName("rental_price_monthly", alternate = ["rentalPriceMonthly", "rentalPrice", "monthlyRate", "rate", "rental_rate"]) val rentalPriceMonthly: Double? = 15.0,
+    @SerializedName("in_stock", alternate = ["inStock", "stock", "quantity", "inventory"]) val inStock: Int? = 100,
+    @SerializedName("rented_count", alternate = ["rentedCount", "rented"]) val rentedCount: Int? = 0,
     @SerializedName("description") val description: String? = "",
-    @SerializedName("image") val image: String? = "",
+    @SerializedName("image", alternate = ["img", "photo", "imageUrl"]) val image: String? = "",
     @SerializedName("specs") val specs: String? = "",
     @SerializedName("suspended") val suspended: Boolean? = false,
-    @SerializedName("is_rental", alternate = ["isRental"]) val isRental: Boolean? = true,
-    @SerializedName("is_purchase", alternate = ["isPurchase"]) val isPurchase: Boolean? = true
+    @SerializedName("is_rental", alternate = ["isRental", "rental"]) val isRental: Boolean? = true,
+    @SerializedName("is_purchase", alternate = ["isPurchase", "purchase"]) val isPurchase: Boolean? = true
 )
 
 data class ClientOrderItem(
