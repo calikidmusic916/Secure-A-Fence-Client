@@ -23,10 +23,16 @@ interface ClientApiService {
     suspend fun updateCustomerProfile(@Path("id") id: String, @Body profile: CustomerProfile): Response<CustomerProfile>
 
     @GET("api/jobsites")
-    suspend fun getJobsites(@Query("customer_id") customerId: String? = null): Response<List<Jobsite>>
+    suspend fun getJobsites(@Query("customer_id") customerId: String? = null, @Query("customer_email") customerEmail: String? = null): Response<List<Jobsite>>
 
     @POST("api/jobsites")
     suspend fun createJobsite(@Body jobsite: Jobsite): Response<Jobsite>
+
+    @POST("api/admin/customers/{customerId}/jobsites")
+    suspend fun createJobsiteAdmin(
+        @Path("customerId") customerId: String,
+        @Body jobsite: Jobsite
+    ): Response<Map<String, Any>>
 
     @GET("api/products")
     suspend fun getProducts(): Response<List<ClientProduct>>

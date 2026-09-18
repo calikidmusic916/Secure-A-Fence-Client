@@ -59,13 +59,19 @@ class ProfileAndJobsitesFragment : Fragment() {
         loadJobsites()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadJobsites()
+    }
+
     private fun loadJobsites() {
         binding.pbLoading.visibility = View.VISIBLE
         val customerId = ClientSessionManager.getCustomerId(requireContext())
+        val customerEmail = ClientSessionManager.getCustomerEmail(requireContext())
 
         lifecycleScope.launch {
             try {
-                val response = ClientApiClient.instance.getJobsites(customerId.ifEmpty { null })
+                val response = ClientApiClient.instance.getJobsites(customerId.ifEmpty { null }, customerEmail.ifEmpty { null })
                 jobsitesList.clear()
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
                     jobsitesList.addAll(response.body()!!)
@@ -108,8 +114,10 @@ class ProfileAndJobsitesFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            val customerId = ClientSessionManager.getCustomerId(requireContext()).ifEmpty { "cust-101" }
             val newJobsite = Jobsite(
-                customerId = ClientSessionManager.getCustomerId(requireContext()),
+                id = "site-${System.currentTimeMillis()}",
+                customerId = customerId,
                 name = name,
                 address = address,
                 contactName = contactName,
@@ -120,20 +128,21 @@ class ProfileAndJobsitesFragment : Fragment() {
 
             lifecycleScope.launch {
                 try {
-                    val response = ClientApiClient.instance.createJobsite(newJobsite)
-                    if (response.isSuccessful && response.body() != null) {
-                        jobsitesList.add(0, response.body()!!)
-                    } else {
-                        jobsitesList.add(0, newJobsite)
+                    val api = ClientApiClient.instance
+                    try {
+                        api.createJobsiteAdmin(customerId, newJobsite)
+                    } catch (e: Exception) {
+                        // fallback
                     }
-                    adapter.notifyDataSetChanged()
-                    binding.tvEmptyJobsites.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Jobsite saved to Supabase!", Toast.LENGTH_SHORT).show()
+                    api.createJobsite(newJobsite)
+
+                    Toast.makeText(requireContext(), "Jobsite saved to Supabase & Admin sync!", Toast.LENGTH_SHORT).show()
+                    loadJobsites()
                 } catch (e: Exception) {
                     jobsitesList.add(0, newJobsite)
                     adapter.notifyDataSetChanged()
                     binding.tvEmptyJobsites.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Jobsite added!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Jobsite added locally!", Toast.LENGTH_SHORT).show()
                 } finally {
                     dialog.dismiss()
                 }

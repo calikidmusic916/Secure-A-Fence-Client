@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,10 +28,16 @@ public final class ItemProductCardBinding implements ViewBinding {
   public final Button btnAddRental;
 
   @NonNull
+  public final ImageView ivProductImage;
+
+  @NonNull
   public final TextView tvProductDescription;
 
   @NonNull
   public final TextView tvProductName;
+
+  @NonNull
+  public final TextView tvRentalAvailability;
 
   @NonNull
   public final TextView tvRentalPrice;
@@ -42,14 +49,17 @@ public final class ItemProductCardBinding implements ViewBinding {
   public final TextView tvStockBadge;
 
   private ItemProductCardBinding(@NonNull CardView rootView, @NonNull Button btnAddPurchase,
-      @NonNull Button btnAddRental, @NonNull TextView tvProductDescription,
-      @NonNull TextView tvProductName, @NonNull TextView tvRentalPrice,
+      @NonNull Button btnAddRental, @NonNull ImageView ivProductImage,
+      @NonNull TextView tvProductDescription, @NonNull TextView tvProductName,
+      @NonNull TextView tvRentalAvailability, @NonNull TextView tvRentalPrice,
       @NonNull TextView tvSalePrice, @NonNull TextView tvStockBadge) {
     this.rootView = rootView;
     this.btnAddPurchase = btnAddPurchase;
     this.btnAddRental = btnAddRental;
+    this.ivProductImage = ivProductImage;
     this.tvProductDescription = tvProductDescription;
     this.tvProductName = tvProductName;
+    this.tvRentalAvailability = tvRentalAvailability;
     this.tvRentalPrice = tvRentalPrice;
     this.tvSalePrice = tvSalePrice;
     this.tvStockBadge = tvStockBadge;
@@ -94,6 +104,12 @@ public final class ItemProductCardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.ivProductImage;
+      ImageView ivProductImage = ViewBindings.findChildViewById(rootView, id);
+      if (ivProductImage == null) {
+        break missingId;
+      }
+
       id = R.id.tvProductDescription;
       TextView tvProductDescription = ViewBindings.findChildViewById(rootView, id);
       if (tvProductDescription == null) {
@@ -103,6 +119,12 @@ public final class ItemProductCardBinding implements ViewBinding {
       id = R.id.tvProductName;
       TextView tvProductName = ViewBindings.findChildViewById(rootView, id);
       if (tvProductName == null) {
+        break missingId;
+      }
+
+      id = R.id.tvRentalAvailability;
+      TextView tvRentalAvailability = ViewBindings.findChildViewById(rootView, id);
+      if (tvRentalAvailability == null) {
         break missingId;
       }
 
@@ -125,7 +147,8 @@ public final class ItemProductCardBinding implements ViewBinding {
       }
 
       return new ItemProductCardBinding((CardView) rootView, btnAddPurchase, btnAddRental,
-          tvProductDescription, tvProductName, tvRentalPrice, tvSalePrice, tvStockBadge);
+          ivProductImage, tvProductDescription, tvProductName, tvRentalAvailability, tvRentalPrice,
+          tvSalePrice, tvStockBadge);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -11,18 +11,29 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
+        <ImageView
+            android:id="@+id/ivCompanyLogo"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/company_logo"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp" />
+
         <TextView
             android:id="@+id/tvAppTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SECURE-A-FENCE"
             android:textColor="@color/primary_blue"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivCompanyLogo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="32dp" />
+            android:layout_marginTop="12dp" />
 
         <TextView
             android:id="@+id/tvAppSubtitle"
@@ -30,11 +41,11 @@
             android:layout_height="wrap_content"
             android:text="Customer Portal &amp; Rental Orders"
             android:textColor="@color/text_secondary"
-            android:textSize="15sp"
+            android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/tvAppTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="6dp" />
+            android:layout_marginTop="4dp" />
 
         <!-- Tab Switcher for Login vs Sign Up -->
         <com.google.android.material.tabs.TabLayout
@@ -46,7 +57,7 @@
             app:tabSelectedTextColor="@color/primary_blue"
             app:tabTextColor="@color/text_muted"
             app:layout_constraintTop_toBottomOf="@id/tvAppSubtitle"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="16dp">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -203,7 +214,7 @@
             android:backgroundTint="@color/primary_blue"
             android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/tilPassword"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="20dp" />
 
         <ProgressBar
             android:id="@+id/pbLoading"
@@ -228,7 +239,7 @@
             app:layout_constraintTop_toBottomOf="@id/pbLoading"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

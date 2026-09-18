@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -46,6 +47,9 @@ public final class ActivityClientLoginBinding implements ViewBinding {
   public final TextInputEditText etPhone;
 
   @NonNull
+  public final ImageView ivCompanyLogo;
+
+  @NonNull
   public final ProgressBar pbLoading;
 
   @NonNull
@@ -82,12 +86,12 @@ public final class ActivityClientLoginBinding implements ViewBinding {
       @NonNull TextInputEditText etAddress, @NonNull TextInputEditText etCompany,
       @NonNull TextInputEditText etEmail, @NonNull TextInputEditText etName,
       @NonNull TextInputEditText etPassword, @NonNull TextInputEditText etPhone,
-      @NonNull ProgressBar pbLoading, @NonNull TabLayout tabAuthMode,
-      @NonNull TextInputLayout tilAddress, @NonNull TextInputLayout tilCompany,
-      @NonNull TextInputLayout tilEmail, @NonNull TextInputLayout tilName,
-      @NonNull TextInputLayout tilPassword, @NonNull TextInputLayout tilPhone,
-      @NonNull TextView tvAppSubtitle, @NonNull TextView tvAppTitle,
-      @NonNull TextView tvToggleModeLink) {
+      @NonNull ImageView ivCompanyLogo, @NonNull ProgressBar pbLoading,
+      @NonNull TabLayout tabAuthMode, @NonNull TextInputLayout tilAddress,
+      @NonNull TextInputLayout tilCompany, @NonNull TextInputLayout tilEmail,
+      @NonNull TextInputLayout tilName, @NonNull TextInputLayout tilPassword,
+      @NonNull TextInputLayout tilPhone, @NonNull TextView tvAppSubtitle,
+      @NonNull TextView tvAppTitle, @NonNull TextView tvToggleModeLink) {
     this.rootView = rootView;
     this.btnLogin = btnLogin;
     this.etAddress = etAddress;
@@ -96,6 +100,7 @@ public final class ActivityClientLoginBinding implements ViewBinding {
     this.etName = etName;
     this.etPassword = etPassword;
     this.etPhone = etPhone;
+    this.ivCompanyLogo = ivCompanyLogo;
     this.pbLoading = pbLoading;
     this.tabAuthMode = tabAuthMode;
     this.tilAddress = tilAddress;
@@ -178,6 +183,12 @@ public final class ActivityClientLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.ivCompanyLogo;
+      ImageView ivCompanyLogo = ViewBindings.findChildViewById(rootView, id);
+      if (ivCompanyLogo == null) {
+        break missingId;
+      }
+
       id = R.id.pbLoading;
       ProgressBar pbLoading = ViewBindings.findChildViewById(rootView, id);
       if (pbLoading == null) {
@@ -245,8 +256,9 @@ public final class ActivityClientLoginBinding implements ViewBinding {
       }
 
       return new ActivityClientLoginBinding((ScrollView) rootView, btnLogin, etAddress, etCompany,
-          etEmail, etName, etPassword, etPhone, pbLoading, tabAuthMode, tilAddress, tilCompany,
-          tilEmail, tilName, tilPassword, tilPhone, tvAppSubtitle, tvAppTitle, tvToggleModeLink);
+          etEmail, etName, etPassword, etPhone, ivCompanyLogo, pbLoading, tabAuthMode, tilAddress,
+          tilCompany, tilEmail, tilName, tilPassword, tilPhone, tvAppSubtitle, tvAppTitle,
+          tvToggleModeLink);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -10,101 +10,128 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/ivProductImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            android:background="#E0E0E0"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvProductName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Temporary Mesh Fence Panel"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_toStartOf="@id/tvStockBadge"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:id="@+id/tvStockBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In Stock (120)"
+                    android:textColor="@color/status_green"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tvProductName"
+                android:id="@+id/tvProductDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6ft x 10ft Temporary Mesh Panel"
-                android:textColor="@color/text_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_toStartOf="@id/tvStockBadge"
-                android:layout_alignParentStart="true" />
+                android:text="Heavy duty galvanized steel temporary fencing panel for perimeter security."
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:layout_marginTop="6dp" />
+
+            <!-- Prices & Rental Availability -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/tvRentalPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rental: $15.00/mo"
+                    android:textColor="@color/primary_blue"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSalePrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Buy: $85.00"
+                    android:textColor="@color/accent_orange"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvStockBadge"
+                android:id="@+id/tvRentalAvailability"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="In Stock (120)"
+                android:text="✓ Available for Monthly Rental"
                 android:textColor="@color/status_green"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+                android:layout_marginTop="6dp" />
 
-        <TextView
-            android:id="@+id/tvProductDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Heavy duty galvanized steel temporary fencing panel for perimeter security."
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/tvRentalPrice"
-                android:layout_width="0dp"
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rental: $15.00/mo"
-                android:textColor="@color/primary_blue"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:layout_marginTop="14dp">
 
-            <TextView
-                android:id="@+id/tvSalePrice"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Buy: $85.00"
-                android:textColor="@color/accent_orange"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btnAddRental"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="+ Rent"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:backgroundTint="@color/primary_blue"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="6dp" />
+
+                <Button
+                    android:id="@+id/btnAddPurchase"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="+ Buy"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:backgroundTint="@color/accent_orange"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="6dp" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="14dp">
-
-            <Button
-                android:id="@+id/btnAddRental"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="+ Add Rental"
-                android:textAllCaps="false"
-                android:textSize="13sp"
-                android:backgroundTint="@color/primary_blue"
-                android:textColor="@color/white"
-                android:layout_marginEnd="6dp" />
-
-            <Button
-                android:id="@+id/btnAddPurchase"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="+ Buy Outright"
-                android:textAllCaps="false"
-                android:textSize="13sp"
-                android:backgroundTint="@color/accent_orange"
-                android:textColor="@color/white"
-                android:layout_marginStart="6dp" />
-        </LinearLayout>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

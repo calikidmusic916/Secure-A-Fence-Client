@@ -15,6 +15,7 @@ color text_muted
 color text_primary
 color text_secondary
 color white
+drawable company_logo
 id bottomNavigation
 id btnAddJobsite
 id btnAddPaymentMethod
@@ -44,8 +45,10 @@ id etSiteAddress
 id etSiteName
 id etSpecialInstructions
 id fragmentContainer
-id nav_catalog
-id nav_deliveries
+id ivCompanyLogo
+id ivProductImage
+id nav_catalog_purchase
+id nav_catalog_rental
 id nav_invoices
 id nav_orders
 id nav_profile
@@ -97,6 +100,7 @@ id tvPlanStatus
 id tvProductDescription
 id tvProductName
 id tvRentalAddress
+id tvRentalAvailability
 id tvRentalDates
 id tvRentalId
 id tvRentalPrice

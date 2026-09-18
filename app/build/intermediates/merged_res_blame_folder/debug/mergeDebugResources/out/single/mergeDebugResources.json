@@ -12,16 +12,12 @@
         "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_profile_jobsites.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-debug-83:/layout_item_payment_method.xml.flat",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/item_payment_method.xml"
+        "merged": "com.example.secureafenceclient.app-debug-83:/layout_activity_client_login.xml.flat",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/activity_client_login.xml"
     },
     {
         "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-debug-83:\\layout_item_customer_order.xml.flat",
         "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_customer_order.xml"
-    },
-    {
-        "merged": "com.example.secureafenceclient.app-debug-83:/layout_fragment_invoices_payments.xml.flat",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_invoices_payments.xml"
     },
     {
         "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-debug-83:\\layout_fragment_invoices_payments.xml.flat",
@@ -36,8 +32,16 @@
         "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\activity_client_main.xml"
     },
     {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-debug-83:\\layout_item_payment_method.xml.flat",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_payment_method.xml"
+    },
+    {
         "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-debug-83:\\layout_item_customer_invoice.xml.flat",
         "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_customer_invoice.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-debug-83:/drawable_company_logo.jpg.flat",
+        "source": "com.example.secureafenceclient.app-main-85:/drawable/company_logo.jpg"
     },
     {
         "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-debug-83:\\layout_fragment_customer_orders_rentals.xml.flat",

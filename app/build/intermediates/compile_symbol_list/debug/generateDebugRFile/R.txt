@@ -13,6 +13,7 @@ int color text_muted 0x0
 int color text_primary 0x0
 int color text_secondary 0x0
 int color white 0x0
+int drawable company_logo 0x0
 int id bottomNavigation 0x0
 int id btnAddJobsite 0x0
 int id btnAddPaymentMethod 0x0
@@ -42,8 +43,10 @@ int id etSiteAddress 0x0
 int id etSiteName 0x0
 int id etSpecialInstructions 0x0
 int id fragmentContainer 0x0
-int id nav_catalog 0x0
-int id nav_deliveries 0x0
+int id ivCompanyLogo 0x0
+int id ivProductImage 0x0
+int id nav_catalog_purchase 0x0
+int id nav_catalog_rental 0x0
 int id nav_invoices 0x0
 int id nav_orders 0x0
 int id nav_profile 0x0
@@ -95,6 +98,7 @@ int id tvPlanStatus 0x0
 int id tvProductDescription 0x0
 int id tvProductName 0x0
 int id tvRentalAddress 0x0
+int id tvRentalAvailability 0x0
 int id tvRentalDates 0x0
 int id tvRentalId 0x0
 int id tvRentalPrice 0x0

@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.secureafenceclient.R
 import com.example.secureafenceclient.data.model.ClientOrderItem
 import com.example.secureafenceclient.data.model.ClientProduct
@@ -65,6 +67,7 @@ class ProductCatalogFragment : Fragment() {
             val checkoutDialog = CheckoutDialogFragment.newInstance(cartItems) {
                 cartItems.clear()
                 updateCartBadge()
+                loadProducts()
             }
             checkoutDialog.show(parentFragmentManager, "CheckoutDialog")
         }
@@ -72,12 +75,37 @@ class ProductCatalogFragment : Fragment() {
         loadProducts()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadProducts()
+    }
+
     private fun addToCart(product: ClientProduct, itemType: String) {
+        val stock = product.inStock ?: 0
+        if (stock <= 0) {
+            Toast.makeText(requireContext(), "${product.name} is currently out of stock.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (itemType == "rental" && product.isRental == false) {
+            Toast.makeText(requireContext(), "${product.name} is not available for rental.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (itemType == "purchase" && product.isPurchase == false) {
+            Toast.makeText(requireContext(), "${product.name} is not available for purchase.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val unitPrice = if (itemType == "rental") (product.rentalPriceMonthly ?: 15.0) else (product.salePrice ?: 85.0)
         val existingIndex = cartItems.indexOfFirst { it.productId == product.id && it.itemType == itemType }
 
         if (existingIndex >= 0) {
             val item = cartItems[existingIndex]
+            if (item.quantity >= stock) {
+                Toast.makeText(requireContext(), "Cannot add more. Reached max available stock ($stock).", Toast.LENGTH_SHORT).show()
+                return
+            }
             cartItems[existingIndex] = item.copy(quantity = item.quantity + 1)
         } else {
             cartItems.add(
@@ -104,9 +132,9 @@ class ProductCatalogFragment : Fragment() {
     private fun filterProducts(filterMode: String) {
         displayedProductsList.clear()
         when (filterMode) {
-            "rentals" -> displayedProductsList.addAll(allProductsList.filter { it.isRental == true })
-            "purchases" -> displayedProductsList.addAll(allProductsList.filter { it.isPurchase == true })
-            else -> displayedProductsList.addAll(allProductsList)
+            "rentals" -> displayedProductsList.addAll(allProductsList.filter { it.isRental == true && it.suspended != true })
+            "purchases" -> displayedProductsList.addAll(allProductsList.filter { it.isPurchase == true && it.suspended != true })
+            else -> displayedProductsList.addAll(allProductsList.filter { it.suspended != true })
         }
         adapter.notifyDataSetChanged()
     }
@@ -117,76 +145,17 @@ class ProductCatalogFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val response = ClientApiClient.instance.getProducts()
+                allProductsList.clear()
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
-                    allProductsList.clear()
                     allProductsList.addAll(response.body()!!)
                     filterProducts("all")
-                } else {
-                    loadFallbackProducts()
                 }
             } catch (e: Exception) {
-                loadFallbackProducts()
+                // Keep empty or existing
             } finally {
                 binding.pbLoading.visibility = View.GONE
             }
         }
-    }
-
-    private fun loadFallbackProducts() {
-        allProductsList.clear()
-        allProductsList.add(
-            ClientProduct(
-                id = "prod-101",
-                name = "6ft x 10ft Chain Link Fence Panel",
-                type = "panel",
-                salePrice = 85.00,
-                rentalPriceMonthly = 14.50,
-                inStock = 250,
-                description = "Galvanized steel construction panel for perimeter containment and site safety.",
-                isRental = true,
-                isPurchase = true
-            )
-        )
-        allProductsList.add(
-            ClientProduct(
-                id = "prod-102",
-                name = "Heavy Duty Concrete Fence Feet Base",
-                type = "base",
-                salePrice = 32.00,
-                rentalPriceMonthly = 5.00,
-                inStock = 500,
-                description = "High density concrete base for securing temporary fence panels in wind conditions.",
-                isRental = true,
-                isPurchase = true
-            )
-        )
-        allProductsList.add(
-            ClientProduct(
-                id = "prod-103",
-                name = "Swing Pedestrian Access Gate (4ft Wide)",
-                type = "gate",
-                salePrice = 145.00,
-                rentalPriceMonthly = 25.00,
-                inStock = 45,
-                description = "Latchable swing gate for site personnel access.",
-                isRental = true,
-                isPurchase = true
-            )
-        )
-        allProductsList.add(
-            ClientProduct(
-                id = "prod-104",
-                name = "Privacy Windscreen Mesh Roll (50ft)",
-                type = "accessory",
-                salePrice = 65.00,
-                rentalPriceMonthly = 12.00,
-                inStock = 80,
-                description = "High opacity green privacy netting with reinforced grommets.",
-                isRental = true,
-                isPurchase = true
-            )
-        )
-        filterProducts("all")
     }
 
     override fun onDestroyView() {
@@ -201,11 +170,13 @@ class ProductCatalogFragment : Fragment() {
     ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
         class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val ivImage: ImageView = view.findViewById(R.id.ivProductImage)
             val tvName: TextView = view.findViewById(R.id.tvProductName)
             val tvStock: TextView = view.findViewById(R.id.tvStockBadge)
             val tvDesc: TextView = view.findViewById(R.id.tvProductDescription)
             val tvRentalPrice: TextView = view.findViewById(R.id.tvRentalPrice)
             val tvSalePrice: TextView = view.findViewById(R.id.tvSalePrice)
+            val tvRentalAvail: TextView = view.findViewById(R.id.tvRentalAvailability)
             val btnAddRental: Button = view.findViewById(R.id.btnAddRental)
             val btnAddPurchase: Button = view.findViewById(R.id.btnAddPurchase)
         }
@@ -217,14 +188,54 @@ class ProductCatalogFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
             val item = items[position]
-            holder.tvName.text = item.name ?: "Fence Product"
-            holder.tvStock.text = "In Stock (${item.inStock ?: 0})"
-            holder.tvDesc.text = item.description ?: ""
-            holder.tvRentalPrice.text = "Rental: $${String.format("%.2f", item.rentalPriceMonthly ?: 0.0)}/mo"
-            holder.tvSalePrice.text = "Buy: $${String.format("%.2f", item.salePrice ?: 0.0)}"
+            holder.ivImage.load(item.image.orEmpty().ifEmpty { null }) {
+                crossfade(true)
+                placeholder(android.R.drawable.ic_menu_gallery)
+                error(android.R.drawable.ic_menu_gallery)
+            }
 
-            holder.btnAddRental.setOnClickListener { onAddRental(item) }
-            holder.btnAddPurchase.setOnClickListener { onAddPurchase(item) }
+            holder.tvName.text = item.name ?: "Fence Product"
+            val stock = item.inStock ?: 0
+            holder.tvStock.text = if (stock > 0) "In Stock ($stock)" else "Out of Stock"
+            holder.tvStock.setTextColor(if (stock > 0) android.graphics.Color.parseColor("#2E7D32") else android.graphics.Color.parseColor("#C62828"))
+
+            holder.tvDesc.text = item.description ?: ""
+            
+            val rentalPrice = item.rentalPriceMonthly ?: 0.0
+            val salePrice = item.salePrice ?: 0.0
+
+            holder.tvRentalPrice.text = "Rental: $${String.format("%.2f", rentalPrice)}/mo"
+            holder.tvSalePrice.text = "Buy: $${String.format("%.2f", salePrice)}"
+
+            val isRentalAllowed = item.isRental == true
+            val isPurchaseAllowed = item.isPurchase == true
+
+            if (isRentalAllowed) {
+                holder.tvRentalAvail.visibility = View.VISIBLE
+                holder.tvRentalAvail.text = "✓ Available for Monthly Rental"
+            } else {
+                holder.tvRentalAvail.visibility = View.GONE
+            }
+
+            // Rental Button
+            if (stock <= 0 || !isRentalAllowed) {
+                holder.btnAddRental.isEnabled = false
+                holder.btnAddRental.alpha = 0.4f
+            } else {
+                holder.btnAddRental.isEnabled = true
+                holder.btnAddRental.alpha = 1.0f
+                holder.btnAddRental.setOnClickListener { onAddRental(item) }
+            }
+
+            // Purchase Button
+            if (stock <= 0 || !isPurchaseAllowed) {
+                holder.btnAddPurchase.isEnabled = false
+                holder.btnAddPurchase.alpha = 0.4f
+            } else {
+                holder.btnAddPurchase.isEnabled = true
+                holder.btnAddPurchase.alpha = 1.0f
+                holder.btnAddPurchase.setOnClickListener { onAddPurchase(item) }
+            }
         }
 
         override fun getItemCount(): Int = items.size
