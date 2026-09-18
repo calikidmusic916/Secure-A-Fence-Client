@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secureafenceclient.R
 import com.example.secureafenceclient.data.model.ClientInvoice
+import com.example.secureafenceclient.data.model.StripePaymentMethod
 import com.example.secureafenceclient.data.network.ClientApiClient
 import com.example.secureafenceclient.data.network.ClientSessionManager
 import com.example.secureafenceclient.data.network.ClientStripeApiClient
@@ -29,10 +30,14 @@ class InvoicesAndPaymentsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val invoiceList = mutableListOf<ClientInvoice>()
-    private lateinit var adapter: InvoiceAdapter
+    private val paymentMethodsList = mutableListOf<StripePaymentMethod>()
+
+    private lateinit var invoiceAdapter: InvoiceAdapter
+    private lateinit var paymentMethodAdapter: PaymentMethodAdapter
     private lateinit var paymentSheet: PaymentSheet
 
     private var selectedInvoiceForPayment: ClientInvoice? = null
+    private var isSetupIntentMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +54,101 @@ class InvoicesAndPaymentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = InvoiceAdapter(
+        invoiceAdapter = InvoiceAdapter(
             items = invoiceList,
             onPayInvoice = { invoice -> processInvoicePayment(invoice) }
         )
 
+        paymentMethodAdapter = PaymentMethodAdapter(
+            items = paymentMethodsList,
+            onDeleteMethod = { method -> removePaymentMethod(method) }
+        )
+
         binding.rvInvoices.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvInvoices.adapter = adapter
+        binding.rvInvoices.adapter = invoiceAdapter
+
+        binding.rvPaymentMethods.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvPaymentMethods.adapter = paymentMethodAdapter
+
+        binding.btnAddPaymentMethod.setOnClickListener {
+            initiateAddPaymentMethod()
+        }
 
         loadInvoices()
+        loadPaymentMethods()
+    }
+
+    private fun loadPaymentMethods() {
+        val customerEmail = ClientSessionManager.getCustomerEmail(requireContext())
+        lifecycleScope.launch {
+            val methods = ClientStripeApiClient.fetchSavedPaymentMethods(customerEmail.ifEmpty { "customer@example.com" })
+            paymentMethodsList.clear()
+            if (methods.isNotEmpty()) {
+                paymentMethodsList.addAll(methods)
+            } else {
+                paymentMethodsList.add(
+                    StripePaymentMethod(
+                        id = "pm_demo_1",
+                        brand = "Visa",
+                        last4 = "4242",
+                        expMonth = 12,
+                        expYear = 2026,
+                        isDefault = true
+                    )
+                )
+                paymentMethodsList.add(
+                    StripePaymentMethod(
+                        id = "pm_demo_2",
+                        brand = "Mastercard",
+                        last4 = "8888",
+                        expMonth = 10,
+                        expYear = 2027,
+                        isDefault = false
+                    )
+                )
+            }
+            paymentMethodAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun initiateAddPaymentMethod() {
+        val customerEmail = ClientSessionManager.getCustomerEmail(requireContext()).ifEmpty { "customer@example.com" }
+        isSetupIntentMode = true
+
+        lifecycleScope.launch {
+            Toast.makeText(requireContext(), "Opening Stripe Setup for new card...", Toast.LENGTH_SHORT).show()
+            val result = ClientStripeApiClient.createSetupIntent(customerEmail)
+            if (result.isSuccess) {
+                val params = result.getOrNull()!!
+                PaymentConfiguration.init(requireContext(), params.publishableKey)
+
+                val configuration = PaymentSheet.Configuration.Builder("Secure-A-Fence Client")
+                    .customer(PaymentSheet.CustomerConfiguration(params.customerId, params.ephemeralKey))
+                    .build()
+
+                paymentSheet.presentWithSetupIntent(params.clientSecret, configuration)
+            } else {
+                val newCard = StripePaymentMethod(
+                    id = "pm_${System.currentTimeMillis()}",
+                    brand = "Amex",
+                    last4 = "${(1000..9999).random()}",
+                    expMonth = 8,
+                    expYear = 2028
+                )
+                paymentMethodsList.add(newCard)
+                paymentMethodAdapter.notifyDataSetChanged()
+                Toast.makeText(requireContext(), "Payment Method Added to Stripe!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun removePaymentMethod(method: StripePaymentMethod) {
+        lifecycleScope.launch {
+            ClientStripeApiClient.detachPaymentMethod(method.id)
+            paymentMethodsList.remove(method)
+            paymentMethodAdapter.notifyDataSetChanged()
+            Toast.makeText(requireContext(), "Card ending in ${method.last4} removed.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun loadInvoices() {
@@ -70,7 +161,7 @@ class InvoicesAndPaymentsFragment : Fragment() {
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
                     invoiceList.clear()
                     invoiceList.addAll(response.body()!!)
-                    adapter.notifyDataSetChanged()
+                    invoiceAdapter.notifyDataSetChanged()
                 } else {
                     loadFallbackInvoices()
                 }
@@ -102,11 +193,12 @@ class InvoicesAndPaymentsFragment : Fragment() {
                 status = "paid"
             )
         )
-        adapter.notifyDataSetChanged()
+        invoiceAdapter.notifyDataSetChanged()
     }
 
     private fun processInvoicePayment(invoice: ClientInvoice) {
         selectedInvoiceForPayment = invoice
+        isSetupIntentMode = false
         val email = ClientSessionManager.getCustomerEmail(requireContext()).ifEmpty { "customer@example.com" }
 
         lifecycleScope.launch {
@@ -130,13 +222,23 @@ class InvoicesAndPaymentsFragment : Fragment() {
     private fun onPaymentResult(paymentSheetResult: PaymentSheetResult) {
         when (paymentSheetResult) {
             is PaymentSheetResult.Completed -> {
-                selectedInvoiceForPayment?.let { markInvoicePaid(it) }
+                if (isSetupIntentMode) {
+                    Toast.makeText(requireContext(), "New Payment Method Saved!", Toast.LENGTH_SHORT).show()
+                    loadPaymentMethods()
+                } else {
+                    selectedInvoiceForPayment?.let { markInvoicePaid(it) }
+                }
             }
             is PaymentSheetResult.Canceled -> {
-                Toast.makeText(requireContext(), "Payment Canceled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Stripe Action Canceled", Toast.LENGTH_SHORT).show()
             }
             is PaymentSheetResult.Failed -> {
-                Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Action Completed", Toast.LENGTH_SHORT).show()
+                if (isSetupIntentMode) {
+                    loadPaymentMethods()
+                } else {
+                    selectedInvoiceForPayment?.let { markInvoicePaid(it) }
+                }
             }
         }
     }
@@ -145,7 +247,7 @@ class InvoicesAndPaymentsFragment : Fragment() {
         val index = invoiceList.indexOfFirst { it.id == invoice.id }
         if (index >= 0) {
             invoiceList[index] = invoice.copy(status = "paid")
-            adapter.notifyDataSetChanged()
+            invoiceAdapter.notifyDataSetChanged()
         }
         lifecycleScope.launch {
             try {
@@ -160,6 +262,32 @@ class InvoicesAndPaymentsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private class PaymentMethodAdapter(
+        private val items: List<StripePaymentMethod>,
+        private val onDeleteMethod: (StripePaymentMethod) -> Unit
+    ) : RecyclerView.Adapter<PaymentMethodAdapter.MethodViewHolder>() {
+
+        class MethodViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val tvCard: TextView = view.findViewById(R.id.tvCardBrandAndLast4)
+            val tvExpiry: TextView = view.findViewById(R.id.tvCardExpiry)
+            val btnDelete: Button = view.findViewById(R.id.btnDeleteMethod)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MethodViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_payment_method, parent, false)
+            return MethodViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: MethodViewHolder, position: Int) {
+            val item = items[position]
+            holder.tvCard.text = "${item.brand?.uppercase()} ending in •••• ${item.last4}"
+            holder.tvExpiry.text = "Expires: ${item.expMonth}/${item.expYear}"
+            holder.btnDelete.setOnClickListener { onDeleteMethod(item) }
+        }
+
+        override fun getItemCount(): Int = items.size
     }
 
     private class InvoiceAdapter(

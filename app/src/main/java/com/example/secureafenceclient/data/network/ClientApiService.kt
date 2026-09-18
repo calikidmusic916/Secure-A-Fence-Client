@@ -49,8 +49,18 @@ interface ClientApiService {
     @POST("api/invoices/{id}/pay")
     suspend fun payInvoice(@Path("id") invoiceId: String, @Body body: Map<String, String>): Response<Map<String, Any>>
 
+    // --- Stripe API Payment Sheet & Payment Methods ---
     @POST("api/stripe/create-payment-sheet")
     suspend fun createPaymentSheet(@Body request: Map<String, Any>): Response<Map<String, String>>
+
+    @GET("api/stripe/payment-methods")
+    suspend fun getPaymentMethods(@Query("email") customerEmail: String): Response<List<StripePaymentMethod>>
+
+    @DELETE("api/stripe/payment-methods/{id}")
+    suspend fun detachPaymentMethod(@Path("id") methodId: String): Response<Map<String, Any>>
+
+    @POST("api/stripe/create-setup-intent")
+    suspend fun createSetupIntent(@Body request: Map<String, Any>): Response<Map<String, String>>
 
     // --- Direct Supabase Table Access Routes (PostgREST) ---
     @GET("rest/v1/customers")

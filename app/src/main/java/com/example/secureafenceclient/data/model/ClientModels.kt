@@ -122,3 +122,19 @@ data class StripePaymentSheetParams(
     val customerId: String,
     val publishableKey: String
 )
+
+data class StripePaymentMethod(
+    @SerializedName("id") val id: String,
+    @SerializedName("brand") val brand: String? = "Visa",
+    @SerializedName("last4") val last4: String? = "4242",
+    @SerializedName("exp_month") val expMonth: Int? = 12,
+    @SerializedName("exp_year") val expYear: Int? = 2026,
+    @SerializedName("is_default") val isDefault: Boolean = false
+)
+
+data class StripeSetupIntentParams(
+    val clientSecret: String,
+    val ephemeralKey: String,
+    val customerId: String,
+    val publishableKey: String
+)

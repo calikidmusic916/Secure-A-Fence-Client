@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.secureafenceclient.R;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.lang.NullPointerException;
@@ -27,19 +28,46 @@ public final class ActivityClientLoginBinding implements ViewBinding {
   public final Button btnLogin;
 
   @NonNull
+  public final TextInputEditText etAddress;
+
+  @NonNull
+  public final TextInputEditText etCompany;
+
+  @NonNull
   public final TextInputEditText etEmail;
+
+  @NonNull
+  public final TextInputEditText etName;
 
   @NonNull
   public final TextInputEditText etPassword;
 
   @NonNull
+  public final TextInputEditText etPhone;
+
+  @NonNull
   public final ProgressBar pbLoading;
+
+  @NonNull
+  public final TabLayout tabAuthMode;
+
+  @NonNull
+  public final TextInputLayout tilAddress;
+
+  @NonNull
+  public final TextInputLayout tilCompany;
 
   @NonNull
   public final TextInputLayout tilEmail;
 
   @NonNull
+  public final TextInputLayout tilName;
+
+  @NonNull
   public final TextInputLayout tilPassword;
+
+  @NonNull
+  public final TextInputLayout tilPhone;
 
   @NonNull
   public final TextView tvAppSubtitle;
@@ -48,23 +76,37 @@ public final class ActivityClientLoginBinding implements ViewBinding {
   public final TextView tvAppTitle;
 
   @NonNull
-  public final TextView tvDemoNote;
+  public final TextView tvToggleModeLink;
 
   private ActivityClientLoginBinding(@NonNull ScrollView rootView, @NonNull Button btnLogin,
-      @NonNull TextInputEditText etEmail, @NonNull TextInputEditText etPassword,
-      @NonNull ProgressBar pbLoading, @NonNull TextInputLayout tilEmail,
-      @NonNull TextInputLayout tilPassword, @NonNull TextView tvAppSubtitle,
-      @NonNull TextView tvAppTitle, @NonNull TextView tvDemoNote) {
+      @NonNull TextInputEditText etAddress, @NonNull TextInputEditText etCompany,
+      @NonNull TextInputEditText etEmail, @NonNull TextInputEditText etName,
+      @NonNull TextInputEditText etPassword, @NonNull TextInputEditText etPhone,
+      @NonNull ProgressBar pbLoading, @NonNull TabLayout tabAuthMode,
+      @NonNull TextInputLayout tilAddress, @NonNull TextInputLayout tilCompany,
+      @NonNull TextInputLayout tilEmail, @NonNull TextInputLayout tilName,
+      @NonNull TextInputLayout tilPassword, @NonNull TextInputLayout tilPhone,
+      @NonNull TextView tvAppSubtitle, @NonNull TextView tvAppTitle,
+      @NonNull TextView tvToggleModeLink) {
     this.rootView = rootView;
     this.btnLogin = btnLogin;
+    this.etAddress = etAddress;
+    this.etCompany = etCompany;
     this.etEmail = etEmail;
+    this.etName = etName;
     this.etPassword = etPassword;
+    this.etPhone = etPhone;
     this.pbLoading = pbLoading;
+    this.tabAuthMode = tabAuthMode;
+    this.tilAddress = tilAddress;
+    this.tilCompany = tilCompany;
     this.tilEmail = tilEmail;
+    this.tilName = tilName;
     this.tilPassword = tilPassword;
+    this.tilPhone = tilPhone;
     this.tvAppSubtitle = tvAppSubtitle;
     this.tvAppTitle = tvAppTitle;
-    this.tvDemoNote = tvDemoNote;
+    this.tvToggleModeLink = tvToggleModeLink;
   }
 
   @Override
@@ -100,9 +142,27 @@ public final class ActivityClientLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.etAddress;
+      TextInputEditText etAddress = ViewBindings.findChildViewById(rootView, id);
+      if (etAddress == null) {
+        break missingId;
+      }
+
+      id = R.id.etCompany;
+      TextInputEditText etCompany = ViewBindings.findChildViewById(rootView, id);
+      if (etCompany == null) {
+        break missingId;
+      }
+
       id = R.id.etEmail;
       TextInputEditText etEmail = ViewBindings.findChildViewById(rootView, id);
       if (etEmail == null) {
+        break missingId;
+      }
+
+      id = R.id.etName;
+      TextInputEditText etName = ViewBindings.findChildViewById(rootView, id);
+      if (etName == null) {
         break missingId;
       }
 
@@ -112,9 +172,33 @@ public final class ActivityClientLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.etPhone;
+      TextInputEditText etPhone = ViewBindings.findChildViewById(rootView, id);
+      if (etPhone == null) {
+        break missingId;
+      }
+
       id = R.id.pbLoading;
       ProgressBar pbLoading = ViewBindings.findChildViewById(rootView, id);
       if (pbLoading == null) {
+        break missingId;
+      }
+
+      id = R.id.tabAuthMode;
+      TabLayout tabAuthMode = ViewBindings.findChildViewById(rootView, id);
+      if (tabAuthMode == null) {
+        break missingId;
+      }
+
+      id = R.id.tilAddress;
+      TextInputLayout tilAddress = ViewBindings.findChildViewById(rootView, id);
+      if (tilAddress == null) {
+        break missingId;
+      }
+
+      id = R.id.tilCompany;
+      TextInputLayout tilCompany = ViewBindings.findChildViewById(rootView, id);
+      if (tilCompany == null) {
         break missingId;
       }
 
@@ -124,9 +208,21 @@ public final class ActivityClientLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tilName;
+      TextInputLayout tilName = ViewBindings.findChildViewById(rootView, id);
+      if (tilName == null) {
+        break missingId;
+      }
+
       id = R.id.tilPassword;
       TextInputLayout tilPassword = ViewBindings.findChildViewById(rootView, id);
       if (tilPassword == null) {
+        break missingId;
+      }
+
+      id = R.id.tilPhone;
+      TextInputLayout tilPhone = ViewBindings.findChildViewById(rootView, id);
+      if (tilPhone == null) {
         break missingId;
       }
 
@@ -142,14 +238,15 @@ public final class ActivityClientLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.tvDemoNote;
-      TextView tvDemoNote = ViewBindings.findChildViewById(rootView, id);
-      if (tvDemoNote == null) {
+      id = R.id.tvToggleModeLink;
+      TextView tvToggleModeLink = ViewBindings.findChildViewById(rootView, id);
+      if (tvToggleModeLink == null) {
         break missingId;
       }
 
-      return new ActivityClientLoginBinding((ScrollView) rootView, btnLogin, etEmail, etPassword,
-          pbLoading, tilEmail, tilPassword, tvAppSubtitle, tvAppTitle, tvDemoNote);
+      return new ActivityClientLoginBinding((ScrollView) rootView, btnLogin, etAddress, etCompany,
+          etEmail, etName, etPassword, etPhone, pbLoading, tabAuthMode, tilAddress, tilCompany,
+          tilEmail, tilName, tilPassword, tilPhone, tvAppSubtitle, tvAppTitle, tvToggleModeLink);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

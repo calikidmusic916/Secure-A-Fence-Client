@@ -4,6 +4,7 @@ package com.example.secureafenceclient.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,10 +23,16 @@ public final class FragmentInvoicesPaymentsBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final Button btnAddPaymentMethod;
+
+  @NonNull
   public final ProgressBar pbLoading;
 
   @NonNull
   public final RecyclerView rvInvoices;
+
+  @NonNull
+  public final RecyclerView rvPaymentMethods;
 
   @NonNull
   public final TextView tvPlanDetails;
@@ -34,11 +41,14 @@ public final class FragmentInvoicesPaymentsBinding implements ViewBinding {
   public final TextView tvPlanStatus;
 
   private FragmentInvoicesPaymentsBinding(@NonNull LinearLayout rootView,
-      @NonNull ProgressBar pbLoading, @NonNull RecyclerView rvInvoices,
+      @NonNull Button btnAddPaymentMethod, @NonNull ProgressBar pbLoading,
+      @NonNull RecyclerView rvInvoices, @NonNull RecyclerView rvPaymentMethods,
       @NonNull TextView tvPlanDetails, @NonNull TextView tvPlanStatus) {
     this.rootView = rootView;
+    this.btnAddPaymentMethod = btnAddPaymentMethod;
     this.pbLoading = pbLoading;
     this.rvInvoices = rvInvoices;
+    this.rvPaymentMethods = rvPaymentMethods;
     this.tvPlanDetails = tvPlanDetails;
     this.tvPlanStatus = tvPlanStatus;
   }
@@ -70,6 +80,12 @@ public final class FragmentInvoicesPaymentsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnAddPaymentMethod;
+      Button btnAddPaymentMethod = ViewBindings.findChildViewById(rootView, id);
+      if (btnAddPaymentMethod == null) {
+        break missingId;
+      }
+
       id = R.id.pbLoading;
       ProgressBar pbLoading = ViewBindings.findChildViewById(rootView, id);
       if (pbLoading == null) {
@@ -79,6 +95,12 @@ public final class FragmentInvoicesPaymentsBinding implements ViewBinding {
       id = R.id.rvInvoices;
       RecyclerView rvInvoices = ViewBindings.findChildViewById(rootView, id);
       if (rvInvoices == null) {
+        break missingId;
+      }
+
+      id = R.id.rvPaymentMethods;
+      RecyclerView rvPaymentMethods = ViewBindings.findChildViewById(rootView, id);
+      if (rvPaymentMethods == null) {
         break missingId;
       }
 
@@ -94,8 +116,8 @@ public final class FragmentInvoicesPaymentsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentInvoicesPaymentsBinding((LinearLayout) rootView, pbLoading, rvInvoices,
-          tvPlanDetails, tvPlanStatus);
+      return new FragmentInvoicesPaymentsBinding((LinearLayout) rootView, btnAddPaymentMethod,
+          pbLoading, rvInvoices, rvPaymentMethods, tvPlanDetails, tvPlanStatus);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

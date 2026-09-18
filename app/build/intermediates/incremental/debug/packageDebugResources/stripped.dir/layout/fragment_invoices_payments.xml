@@ -10,12 +10,46 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Invoices &amp; Stripe Payment Plans"
+        android:text="Invoices &amp; Stripe Payments"
         android:textColor="@color/text_primary"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp" />
 
+    <!-- Saved Stripe Cards Section Header -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saved Payment Methods"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:id="@+id/btnAddPaymentMethod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Add Card"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:backgroundTint="@color/primary_blue"
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPaymentMethods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Active Payment Plan Card -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

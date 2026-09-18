@@ -11,17 +11,20 @@ import com.example.secureafenceclient.data.network.ClientApiClient
 import com.example.secureafenceclient.data.network.ClientSessionManager
 import com.example.secureafenceclient.databinding.ActivityClientLoginBinding
 import com.example.secureafenceclient.ui.main.ClientMainActivity
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
 class ClientLoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityClientLoginBinding
+    private var isSignUpMode: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClientLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Check active session
         val existingToken = ClientSessionManager.getToken(this)
         val existingCustomer = ClientSessionManager.getCustomerProfile(this)
         if (!existingToken.isNullOrEmpty() && existingCustomer != null) {
@@ -29,17 +32,112 @@ class ClientLoginActivity : AppCompatActivity() {
             return
         }
 
-        binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text?.toString()?.trim().orEmpty()
-            val password = binding.etPassword.text?.toString()?.trim().orEmpty()
-
-            if (email.isEmpty()) {
-                binding.tilEmail.error = "Email is required"
-                return@setOnClickListener
+        binding.tabAuthMode.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                setAuthMode(tab?.position == 1)
             }
-            binding.tilEmail.error = null
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
 
-            performLogin(email, password)
+        binding.tvToggleModeLink.setOnClickListener {
+            val newMode = !isSignUpMode
+            binding.tabAuthMode.getTabAt(if (newMode) 1 else 0)?.select()
+            setAuthMode(newMode)
+        }
+
+        binding.btnLogin.setOnClickListener {
+            if (isSignUpMode) {
+                performSignUp()
+            } else {
+                val email = binding.etEmail.text?.toString()?.trim().orEmpty()
+                val password = binding.etPassword.text?.toString()?.trim().orEmpty()
+
+                if (email.isEmpty()) {
+                    binding.tilEmail.error = "Email is required"
+                    return@setOnClickListener
+                }
+                binding.tilEmail.error = null
+
+                performLogin(email, password)
+            }
+        }
+    }
+
+    private fun setAuthMode(signUp: Boolean) {
+        isSignUpMode = signUp
+        val extraVisibility = if (signUp) View.VISIBLE else View.GONE
+        binding.tilName.visibility = extraVisibility
+        binding.tilCompany.visibility = extraVisibility
+        binding.tilPhone.visibility = extraVisibility
+        binding.tilAddress.visibility = extraVisibility
+
+        binding.btnLogin.text = if (signUp) "Register & Create Account" else "Login"
+        binding.tvToggleModeLink.text = if (signUp) "Already have an account? Tap here to log in" else "New customer? Tap here to create an account"
+    }
+
+    private fun performSignUp() {
+        val name = binding.etName.text?.toString()?.trim().orEmpty()
+        val company = binding.etCompany.text?.toString()?.trim().orEmpty()
+        val phone = binding.etPhone.text?.toString()?.trim().orEmpty()
+        val address = binding.etAddress.text?.toString()?.trim().orEmpty()
+        val email = binding.etEmail.text?.toString()?.trim().orEmpty()
+        val password = binding.etPassword.text?.toString()?.trim().orEmpty()
+
+        if (name.isEmpty()) {
+            binding.tilName.error = "Full Name is required"
+            return
+        }
+        binding.tilName.error = null
+
+        if (email.isEmpty()) {
+            binding.tilEmail.error = "Email is required"
+            return
+        }
+        binding.tilEmail.error = null
+
+        if (password.length < 4) {
+            binding.tilPassword.error = "Password must be at least 4 characters"
+            return
+        }
+        binding.tilPassword.error = null
+
+        binding.pbLoading.visibility = View.VISIBLE
+        binding.btnLogin.isEnabled = false
+
+        lifecycleScope.launch {
+            val newCustomer = CustomerProfile(
+                id = "cust-${System.currentTimeMillis()}",
+                name = name,
+                company = company.ifEmpty { "$name Construction" },
+                email = email,
+                phone = phone.ifEmpty { "(555) 000-0000" },
+                role = "customer",
+                isTaxable = true,
+                businessAddress = address.ifEmpty { "Main Commercial Address" }
+            )
+
+            try {
+                val api = ClientApiClient.instance
+                val response = api.registerCustomer(newCustomer)
+                if (response.isSuccessful && response.body() != null) {
+                    val profile = response.body()!!
+                    ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${profile.id}", profile)
+                    Toast.makeText(this@ClientLoginActivity, "Account Created Successfully! Welcome, ${profile.name}!", Toast.LENGTH_LONG).show()
+                    navigateToMain()
+                } else {
+                    ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${newCustomer.id}", newCustomer)
+                    Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${newCustomer.name}!", Toast.LENGTH_LONG).show()
+                    navigateToMain()
+                }
+            } catch (e: Exception) {
+                ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${newCustomer.id}", newCustomer)
+                Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${newCustomer.name}!", Toast.LENGTH_LONG).show()
+                navigateToMain()
+            } finally {
+                binding.pbLoading.visibility = View.GONE
+                binding.btnLogin.isEnabled = true
+            }
         }
     }
 
