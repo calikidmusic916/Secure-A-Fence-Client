@@ -85,27 +85,6 @@ class InvoicesAndPaymentsFragment : Fragment() {
             paymentMethodsList.clear()
             if (methods.isNotEmpty()) {
                 paymentMethodsList.addAll(methods)
-            } else {
-                paymentMethodsList.add(
-                    StripePaymentMethod(
-                        id = "pm_demo_1",
-                        brand = "Visa",
-                        last4 = "4242",
-                        expMonth = 12,
-                        expYear = 2026,
-                        isDefault = true
-                    )
-                )
-                paymentMethodsList.add(
-                    StripePaymentMethod(
-                        id = "pm_demo_2",
-                        brand = "Mastercard",
-                        last4 = "8888",
-                        expMonth = 10,
-                        expYear = 2027,
-                        isDefault = false
-                    )
-                )
             }
             paymentMethodAdapter.notifyDataSetChanged()
         }
@@ -128,16 +107,7 @@ class InvoicesAndPaymentsFragment : Fragment() {
 
                 paymentSheet.presentWithSetupIntent(params.clientSecret, configuration)
             } else {
-                val newCard = StripePaymentMethod(
-                    id = "pm_${System.currentTimeMillis()}",
-                    brand = "Amex",
-                    last4 = "${(1000..9999).random()}",
-                    expMonth = 8,
-                    expYear = 2028
-                )
-                paymentMethodsList.add(newCard)
-                paymentMethodAdapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), "Payment Method Added to Stripe!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Stripe SetupIntent pending...", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -158,42 +128,17 @@ class InvoicesAndPaymentsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val response = ClientApiClient.instance.getInvoices(customerEmail.ifEmpty { null })
+                invoiceList.clear()
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
-                    invoiceList.clear()
                     invoiceList.addAll(response.body()!!)
-                    invoiceAdapter.notifyDataSetChanged()
-                } else {
-                    loadFallbackInvoices()
                 }
             } catch (e: Exception) {
-                loadFallbackInvoices()
+                invoiceList.clear()
             } finally {
+                invoiceAdapter.notifyDataSetChanged()
                 binding.pbLoading.visibility = View.GONE
             }
         }
-    }
-
-    private fun loadFallbackInvoices() {
-        invoiceList.clear()
-        invoiceList.add(
-            ClientInvoice(
-                id = "INV-9102",
-                orderId = "ORD-8492",
-                customerName = "John Doe",
-                amount = 210.60,
-                status = "unpaid"
-            )
-        )
-        invoiceList.add(
-            ClientInvoice(
-                id = "INV-8830",
-                orderId = "ORD-7311",
-                customerName = "John Doe",
-                amount = 195.00,
-                status = "paid"
-            )
-        )
-        invoiceAdapter.notifyDataSetChanged()
     }
 
     private fun processInvoicePayment(invoice: ClientInvoice) {

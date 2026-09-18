@@ -61,77 +61,23 @@ class CustomerOrdersAndRentalsFragment : Fragment() {
                 val ordersResp = ClientApiClient.instance.getOrders(customerEmail.ifEmpty { null })
                 val rentalsResp = ClientApiClient.instance.getRentals(customerEmail.ifEmpty { null })
 
+                ordersList.clear()
                 if (ordersResp.isSuccessful && !ordersResp.body().isNullOrEmpty()) {
-                    ordersList.clear()
                     ordersList.addAll(ordersResp.body()!!)
-                } else {
-                    loadFallbackOrders()
                 }
 
+                rentalsList.clear()
                 if (rentalsResp.isSuccessful && !rentalsResp.body().isNullOrEmpty()) {
-                    rentalsList.clear()
                     rentalsList.addAll(rentalsResp.body()!!)
-                } else {
-                    loadFallbackRentals()
                 }
             } catch (e: Exception) {
-                loadFallbackOrders()
-                loadFallbackRentals()
+                ordersList.clear()
+                rentalsList.clear()
             } finally {
                 binding.pbLoading.visibility = View.GONE
                 updateRecyclerView()
             }
         }
-    }
-
-    private fun loadFallbackOrders() {
-        ordersList.clear()
-        ordersList.add(
-            ClientOrder(
-                id = "ORD-8492",
-                orderType = "sale",
-                totalAmount = 210.60,
-                status = "Processing",
-                deliveryAddress = "450 Main St, Suite 100",
-                deliveryDate = "Scheduled for Tomorrow",
-                paymentStatus = "Paid (Stripe)"
-            )
-        )
-        ordersList.add(
-            ClientOrder(
-                id = "ORD-7311",
-                orderType = "rental",
-                totalAmount = 195.00,
-                status = "Delivered",
-                deliveryAddress = "1200 Westside Blvd",
-                deliveryDate = "Delivered May 12",
-                paymentStatus = "Paid (Card)"
-            )
-        )
-    }
-
-    private fun loadFallbackRentals() {
-        rentalsList.clear()
-        rentalsList.add(
-            ClientRental(
-                id = "RNT-5012",
-                jobsiteAddress = "Downtown Tower (450 Main St)",
-                startDate = "2024-05-01",
-                endDate = "2024-11-01",
-                monthlyRateTotal = 145.00,
-                status = "Active Agreement"
-            )
-        )
-        rentalsList.add(
-            ClientRental(
-                id = "RNT-4902",
-                jobsiteAddress = "Westside Highway Project",
-                startDate = "2024-03-15",
-                endDate = "2024-09-15",
-                monthlyRateTotal = 280.00,
-                status = "Active Agreement"
-            )
-        )
     }
 
     private fun updateRecyclerView() {

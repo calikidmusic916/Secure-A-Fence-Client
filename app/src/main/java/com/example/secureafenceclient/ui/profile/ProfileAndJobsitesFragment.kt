@@ -66,57 +66,18 @@ class ProfileAndJobsitesFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val response = ClientApiClient.instance.getJobsites(customerId.ifEmpty { null })
+                jobsitesList.clear()
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
-                    jobsitesList.clear()
                     jobsitesList.addAll(response.body()!!)
-                    adapter.notifyDataSetChanged()
                     binding.tvEmptyJobsites.visibility = View.GONE
                 } else {
-                    jobsitesList.clear()
-                    jobsitesList.add(
-                        Jobsite(
-                            id = "site-101",
-                            customerId = customerId,
-                            name = "Downtown Commercial Tower",
-                            address = "450 Main St, Suite 100",
-                            contactName = "Mike Vance",
-                            contactPhone = "(555) 019-2831",
-                            specialInstructions = "Deliver to North Gate off 5th Ave",
-                            deliveryDistanceMiles = 8.5
-                        )
-                    )
-                    jobsitesList.add(
-                        Jobsite(
-                            id = "site-102",
-                            customerId = customerId,
-                            name = "Westside Highway Expansion",
-                            address = "1200 Westside Blvd",
-                            contactName = "Sarah Jenkins",
-                            contactPhone = "(555) 987-6543",
-                            specialInstructions = "Hard hat required, call before dispatch",
-                            deliveryDistanceMiles = 14.2
-                        )
-                    )
-                    adapter.notifyDataSetChanged()
-                    binding.tvEmptyJobsites.visibility = View.GONE
+                    binding.tvEmptyJobsites.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
                 jobsitesList.clear()
-                jobsitesList.add(
-                    Jobsite(
-                        id = "site-101",
-                        customerId = customerId,
-                        name = "Downtown Commercial Tower",
-                        address = "450 Main St, Suite 100",
-                        contactName = "Mike Vance",
-                        contactPhone = "(555) 019-2831",
-                        specialInstructions = "Deliver to North Gate off 5th Ave",
-                        deliveryDistanceMiles = 8.5
-                    )
-                )
-                adapter.notifyDataSetChanged()
-                binding.tvEmptyJobsites.visibility = View.GONE
+                binding.tvEmptyJobsites.visibility = View.VISIBLE
             } finally {
+                adapter.notifyDataSetChanged()
                 binding.pbLoading.visibility = View.GONE
             }
         }
@@ -163,16 +124,16 @@ class ProfileAndJobsitesFragment : Fragment() {
                     if (response.isSuccessful && response.body() != null) {
                         jobsitesList.add(0, response.body()!!)
                     } else {
-                        jobsitesList.add(0, newJobsite.copy(id = "site-${System.currentTimeMillis()}"))
+                        jobsitesList.add(0, newJobsite)
                     }
                     adapter.notifyDataSetChanged()
                     binding.tvEmptyJobsites.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Jobsite added successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Jobsite saved to Supabase!", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
-                    jobsitesList.add(0, newJobsite.copy(id = "site-${System.currentTimeMillis()}"))
+                    jobsitesList.add(0, newJobsite)
                     adapter.notifyDataSetChanged()
                     binding.tvEmptyJobsites.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Jobsite saved locally!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Jobsite added!", Toast.LENGTH_SHORT).show()
                 } finally {
                     dialog.dismiss()
                 }

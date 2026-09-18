@@ -13,6 +13,9 @@ interface ClientApiService {
     @POST("api/client/register")
     suspend fun registerCustomer(@Body customer: CustomerProfile): Response<CustomerProfile>
 
+    @POST("api/admin/customers")
+    suspend fun createCustomerAdmin(@Body customer: CustomerProfile): Response<Map<String, Any>>
+
     @GET("api/client/profile")
     suspend fun getCustomerProfile(@Query("email") email: String): Response<CustomerProfile>
 
@@ -63,6 +66,14 @@ interface ClientApiService {
     suspend fun createSetupIntent(@Body request: Map<String, Any>): Response<Map<String, String>>
 
     // --- Direct Supabase Table Access Routes (PostgREST) ---
+    @POST("rest/v1/customers")
+    suspend fun supabaseCreateCustomer(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Header("Prefer") preferHeader: String = "return=representation",
+        @Body customer: CustomerProfile
+    ): Response<List<CustomerProfile>>
+
     @GET("rest/v1/customers")
     suspend fun supabaseGetCustomer(
         @Header("apikey") apiKey: String,

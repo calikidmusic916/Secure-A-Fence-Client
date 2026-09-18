@@ -46,48 +46,17 @@ class DeliveryTrackingFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val response = ClientApiClient.instance.getShipments(customerEmail.ifEmpty { null })
+                shipmentList.clear()
                 if (response.isSuccessful && !response.body().isNullOrEmpty()) {
-                    shipmentList.clear()
                     shipmentList.addAll(response.body()!!)
-                    adapter.notifyDataSetChanged()
-                } else {
-                    loadFallbackShipments()
                 }
             } catch (e: Exception) {
-                loadFallbackShipments()
+                shipmentList.clear()
             } finally {
+                adapter.notifyDataSetChanged()
                 binding.pbLoading.visibility = View.GONE
             }
         }
-    }
-
-    private fun loadFallbackShipments() {
-        shipmentList.clear()
-        shipmentList.add(
-            ClientShipment(
-                id = "SHP-3021",
-                orderId = "ORD-8492",
-                type = "Delivery",
-                driverName = "Dave Miller (Flatbed Rig #4)",
-                status = "Out For Delivery",
-                eta = "Today at 2:30 PM (~25 mins away)",
-                destination = "450 Main St (Downtown Tower Site)",
-                notes = "Contact site manager Mike Vance upon arrival."
-            )
-        )
-        shipmentList.add(
-            ClientShipment(
-                id = "SHP-2980",
-                orderId = "ORD-7311",
-                type = "Delivery",
-                driverName = "Robert Taylor",
-                status = "Delivered",
-                eta = "Completed May 12, 11:15 AM",
-                destination = "1200 Westside Blvd",
-                notes = "Fencing panels unloaded at West Gate."
-            )
-        )
-        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

@@ -119,17 +119,19 @@ class ClientLoginActivity : AppCompatActivity() {
 
             try {
                 val api = ClientApiClient.instance
-                val response = api.registerCustomer(newCustomer)
-                if (response.isSuccessful && response.body() != null) {
-                    val profile = response.body()!!
-                    ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${profile.id}", profile)
-                    Toast.makeText(this@ClientLoginActivity, "Account Created Successfully! Welcome, ${profile.name}!", Toast.LENGTH_LONG).show()
-                    navigateToMain()
-                } else {
-                    ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${newCustomer.id}", newCustomer)
-                    Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${newCustomer.name}!", Toast.LENGTH_LONG).show()
-                    navigateToMain()
+                // Register via client route AND create in admin customers table for instant sync across Admin app
+                try {
+                    api.createCustomerAdmin(newCustomer)
+                } catch (e: Exception) {
+                    // Suppress if already exists
                 }
+
+                val response = api.registerCustomer(newCustomer)
+                val finalProfile = response.body() ?: newCustomer
+
+                ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${finalProfile.id}", finalProfile)
+                Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${finalProfile.name}!", Toast.LENGTH_LONG).show()
+                navigateToMain()
             } catch (e: Exception) {
                 ClientSessionManager.saveSession(this@ClientLoginActivity, "auth-token-${newCustomer.id}", newCustomer)
                 Toast.makeText(this@ClientLoginActivity, "Account Created! Welcome, ${newCustomer.name}!", Toast.LENGTH_LONG).show()
