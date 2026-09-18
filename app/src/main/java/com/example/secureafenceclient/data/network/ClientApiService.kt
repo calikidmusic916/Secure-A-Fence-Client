@@ -6,6 +6,7 @@ import retrofit2.http.*
 
 interface ClientApiService {
 
+    // --- Backend REST Routes ---
     @POST("api/client/login")
     suspend fun loginCustomer(@Body credentials: Map<String, String>): Response<Map<String, Any>>
 
@@ -50,4 +51,67 @@ interface ClientApiService {
 
     @POST("api/stripe/create-payment-sheet")
     suspend fun createPaymentSheet(@Body request: Map<String, Any>): Response<Map<String, String>>
+
+    // --- Direct Supabase Table Access Routes (PostgREST) ---
+    @GET("rest/v1/customers")
+    suspend fun supabaseGetCustomer(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Query("email") emailFilter: String
+    ): Response<List<CustomerProfile>>
+
+    @POST("rest/v1/jobsites")
+    suspend fun supabaseCreateJobsite(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Header("Prefer") preferHeader: String = "return=representation",
+        @Body jobsite: Jobsite
+    ): Response<List<Jobsite>>
+
+    @GET("rest/v1/jobsites")
+    suspend fun supabaseGetJobsites(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Query("customer_id") customerIdFilter: String? = null
+    ): Response<List<Jobsite>>
+
+    @GET("rest/v1/products")
+    suspend fun supabaseGetProducts(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String
+    ): Response<List<ClientProduct>>
+
+    @POST("rest/v1/orders")
+    suspend fun supabaseCreateOrder(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Header("Prefer") preferHeader: String = "return=representation",
+        @Body order: ClientOrder
+    ): Response<List<ClientOrder>>
+
+    @GET("rest/v1/orders")
+    suspend fun supabaseGetOrders(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Query("customer_email") emailFilter: String? = null
+    ): Response<List<ClientOrder>>
+
+    @GET("rest/v1/rentals")
+    suspend fun supabaseGetRentals(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String,
+        @Query("customer_email") emailFilter: String? = null
+    ): Response<List<ClientRental>>
+
+    @GET("rest/v1/shipments")
+    suspend fun supabaseGetShipments(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String
+    ): Response<List<ClientShipment>>
+
+    @GET("rest/v1/invoices")
+    suspend fun supabaseGetInvoices(
+        @Header("apikey") apiKey: String,
+        @Header("Authorization") authHeader: String
+    ): Response<List<ClientInvoice>>
 }

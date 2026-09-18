@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.secureafenceclient.app-mergeDebugResources-81:/values-ji/values-ji.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\user\\.gradle\\caches\\9.7.1\\transforms\\588f310d8aaa8ac98f5a544e9fe19608\\transformed\\hcaptcha-20.38.0\\res\\values-ji\\values-ji.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "85",
+                        "endOffsets": "136"
+                    }
+                }
+            ]
+        }
+    ]
+}
