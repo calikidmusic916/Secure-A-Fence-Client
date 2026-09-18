@@ -4,48 +4,36 @@
         "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_customer_orders_rentals.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/dialog_add_jobsite.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/dialog_add_jobsite.xml"
-    },
-    {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/activity_client_login.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/activity_client_login.xml"
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_customer_order.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_customer_order.xml"
     },
     {
         "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_invoices_payments.xml",
         "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_invoices_payments.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_delivery_tracking.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_delivery_tracking.xml"
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\activity_client_login.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\activity_client_login.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_customer_invoice.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/item_customer_invoice.xml"
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\dialog_add_jobsite.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\dialog_add_jobsite.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_customer_order.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/item_customer_order.xml"
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\fragment_profile_jobsites.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_profile_jobsites.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\fragment_customer_orders_rentals.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_customer_orders_rentals.xml"
     },
     {
         "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_profile_jobsites.xml",
         "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_profile_jobsites.xml"
     },
     {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_product_catalog.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_product_catalog.xml"
-    },
-    {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/activity_client_main.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/activity_client_main.xml"
-    },
-    {
         "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_shipment_tracking.xml",
         "source": "com.example.secureafenceclient.app-main-85:/layout/item_shipment_tracking.xml"
-    },
-    {
-        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/dialog_checkout.xml",
-        "source": "com.example.secureafenceclient.app-main-85:/layout/dialog_checkout.xml"
     },
     {
         "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_jobsite_card.xml",
@@ -56,7 +44,79 @@
         "source": "com.example.secureafenceclient.app-main-85:/layout/item_product_card.xml"
     },
     {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_customer_rental.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_customer_rental.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\fragment_delivery_tracking.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_delivery_tracking.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/dialog_add_jobsite.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/dialog_add_jobsite.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/activity_client_login.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/activity_client_login.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_delivery_tracking.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_delivery_tracking.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_shipment_tracking.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_shipment_tracking.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_customer_invoice.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/item_customer_invoice.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_customer_order.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/item_customer_order.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_customer_invoice.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_customer_invoice.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_product_card.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_product_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\fragment_invoices_payments.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_invoices_payments.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\activity_client_main.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\activity_client_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\fragment_product_catalog.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\fragment_product_catalog.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\item_jobsite_card.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\item_jobsite_card.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/fragment_product_catalog.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/fragment_product_catalog.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/activity_client_main.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/activity_client_main.xml"
+    },
+    {
+        "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/dialog_checkout.xml",
+        "source": "com.example.secureafenceclient.app-main-85:/layout/dialog_checkout.xml"
+    },
+    {
         "merged": "com.example.secureafenceclient.app-mergeDebugResources-82:/layout/item_customer_rental.xml",
         "source": "com.example.secureafenceclient.app-main-85:/layout/item_customer_rental.xml"
+    },
+    {
+        "merged": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-mergeDebugResources-82:\\layout\\dialog_checkout.xml",
+        "source": "C:\\Users\\user\\.gradle\\daemon\\9.7.1\\com.example.secureafenceclient.app-main-85:\\layout\\dialog_checkout.xml"
     }
 ]

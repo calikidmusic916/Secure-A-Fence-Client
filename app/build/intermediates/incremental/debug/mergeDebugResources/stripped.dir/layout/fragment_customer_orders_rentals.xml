@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212"
+    android:background="@color/bg_light"
     android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Orders &amp; Rentals"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/text_primary"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp" />
@@ -20,10 +20,10 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1E1E1E"
-        app:tabIndicatorColor="#FFE65100"
-        app:tabSelectedTextColor="#FFE65100"
-        app:tabTextColor="#888888"
+        android:background="@color/white"
+        app:tabIndicatorColor="@color/primary_blue"
+        app:tabSelectedTextColor="@color/primary_blue"
+        app:tabTextColor="@color/text_muted"
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.tabs.TabItem
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminateTint="#FFE65100"
+        android:indeterminateTint="@color/primary_blue"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#121212"
+    android:background="@color/bg_light"
     android:padding="16dp">
 
     <RelativeLayout
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fence Catalog"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             android:text="Cart (0)"
             android:textAllCaps="false"
-            android:backgroundTint="#FFE65100"
-            android:textColor="#FFFFFF"
+            android:backgroundTint="@color/accent_orange"
+            android:textColor="@color/white"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="All Products"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/text_primary" />
 
         <Button
             android:id="@+id/btnFilterRentals"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Rentals"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/text_primary" />
 
         <Button
             android:id="@+id/btnFilterPurchases"
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Purchases"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/text_primary" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <ProgressBar
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:indeterminateTint="#FFE65100"
+        android:indeterminateTint="@color/primary_blue"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

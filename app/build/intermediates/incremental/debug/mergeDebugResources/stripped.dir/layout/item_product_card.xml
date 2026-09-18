@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#1E1E1E"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="10dp"
     android:layout_marginBottom="12dp">
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="14dp">
+        android:padding="16dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6ft x 10ft Temporary Mesh Panel"
-                android:textColor="#FFFFFF"
-                android:textSize="17sp"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_toStartOf="@id/tvStockBadge"
                 android:layout_alignParentStart="true" />
@@ -33,8 +33,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="In Stock (120)"
-                android:textColor="#4CAF50"
-                android:textSize="12sp"
+                android:textColor="@color/status_green"
+                android:textSize="13sp"
+                android:textStyle="bold"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
@@ -43,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Heavy duty galvanized steel temporary fencing panel for perimeter security."
-            android:textColor="#BBBBBB"
-            android:textSize="13sp"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
             android:layout_marginTop="4dp" />
 
         <LinearLayout
@@ -59,8 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Rental: $15.00/mo"
-                android:textColor="#FFE65100"
-                android:textSize="14sp"
+                android:textColor="@color/primary_blue"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -69,8 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Buy: $85.00"
-                android:textColor="#FFB300"
-                android:textSize="14sp"
+                android:textColor="@color/accent_orange"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -78,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="14dp">
 
             <Button
                 android:id="@+id/btnAddRental"
@@ -87,9 +88,9 @@
                 android:layout_weight="1"
                 android:text="+ Add Rental"
                 android:textAllCaps="false"
-                android:textSize="12sp"
-                android:backgroundTint="#FFE65100"
-                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:backgroundTint="@color/primary_blue"
+                android:textColor="@color/white"
                 android:layout_marginEnd="6dp" />
 
             <Button
@@ -99,9 +100,9 @@
                 android:layout_weight="1"
                 android:text="+ Buy Outright"
                 android:textAllCaps="false"
-                android:textSize="12sp"
-                android:backgroundTint="#FFB300"
-                android:textColor="#000000"
+                android:textSize="13sp"
+                android:backgroundTint="@color/accent_orange"
+                android:textColor="@color/white"
                 android:layout_marginStart="6dp" />
         </LinearLayout>
 

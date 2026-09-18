@@ -1,16 +1,19 @@
 R_DEF: Internal format may change without notice
 local
-color accent_gold
-color bg_dark
+color accent_orange
+color accent_orange_light
+color bg_light
 color black
-color card_dark
-color primary_dark_orange
-color primary_orange
-color purple_200
-color purple_500
-color purple_700
-color teal_200
-color teal_700
+color card_surface
+color divider_color
+color primary_blue
+color primary_blue_variant
+color status_green
+color status_orange
+color status_red
+color text_muted
+color text_primary
+color text_secondary
 color white
 id bottomNavigation
 id btnAddJobsite

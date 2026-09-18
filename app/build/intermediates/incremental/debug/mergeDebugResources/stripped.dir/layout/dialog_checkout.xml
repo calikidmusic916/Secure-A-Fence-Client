@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1E1E1E">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Checkout &amp; Order Placement"
-            android:textColor="#FFE65100"
+            android:textColor="@color/primary_blue"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
@@ -23,15 +23,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Delivery Jobsite:"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
+            android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
         <Spinner
             android:id="@+id/spJobsite"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="#2C2C2C"
+            android:background="@color/bg_light"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -39,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Order Items:\n• 10x 6ft Mesh Panel ($145.00)"
-            android:textColor="#CCCCCC"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp"
-            android:background="#121212"
+            android:background="@color/bg_light"
             android:padding="12dp"
             android:layout_marginBottom="16dp" />
 
@@ -49,40 +50,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#262626"
+            android:background="@color/bg_light"
             android:padding="14dp"
             android:layout_marginBottom="16dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Subtotal:" android:textColor="#888888" />
-                <TextView android:id="@+id/tvSubtotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$145.00" android:textColor="#FFFFFF" android:layout_alignParentEnd="true" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Subtotal:" android:textColor="@color/text_secondary" />
+                <TextView android:id="@+id/tvSubtotal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$145.00" android:textColor="@color/text_primary" android:textStyle="bold" android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Delivery Fee:" android:textColor="#888888" />
-                <TextView android:id="@+id/tvDeliveryFee" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$50.00" android:textColor="#FFFFFF" android:layout_alignParentEnd="true" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Delivery Fee:" android:textColor="@color/text_secondary" />
+                <TextView android:id="@+id/tvDeliveryFee" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$50.00" android:textColor="@color/text_primary" android:textStyle="bold" android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Est. Tax (8%):" android:textColor="#888888" />
-                <TextView android:id="@+id/tvTax" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$15.60" android:textColor="#FFFFFF" android:layout_alignParentEnd="true" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Est. Tax (8%):" android:textColor="@color/text_secondary" />
+                <TextView android:id="@+id/tvTax" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$15.60" android:textColor="@color/text_primary" android:textStyle="bold" android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#444444" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" />
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider_color" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Amount Due:" android:textColor="#FFFFFF" android:textSize="16sp" android:textStyle="bold" />
-                <TextView android:id="@+id/tvTotalAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$210.60" android:textColor="#FFE65100" android:textSize="18sp" android:textStyle="bold" android:layout_alignParentEnd="true" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Amount Due:" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
+                <TextView android:id="@+id/tvTotalAmount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$210.60" android:textColor="@color/primary_blue" android:textSize="18sp" android:textStyle="bold" android:layout_alignParentEnd="true" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -91,7 +92,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Setup Monthly Payment Plan (3 Equal Installments)"
-            android:textColor="#FFB300"
+            android:textColor="@color/accent_orange"
+            android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
         <Button
@@ -101,15 +103,16 @@
             android:text="Pay with Stripe Checkout"
             android:textAllCaps="false"
             android:textSize="16sp"
-            android:backgroundTint="#FFE65100"
-            android:textColor="#FFFFFF" />
+            android:textStyle="bold"
+            android:backgroundTint="@color/primary_blue"
+            android:textColor="@color/white" />
 
         <ProgressBar
             android:id="@+id/pbLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:indeterminateTint="#FFE65100"
+            android:indeterminateTint="@color/primary_blue"
             android:visibility="gone"
             android:layout_marginTop="12dp" />
 
